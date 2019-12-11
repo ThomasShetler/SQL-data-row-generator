@@ -106,13 +106,16 @@ public class speederuppermain {
 		int amount = 0;
 //		System.out.println("how many colums are there? (4 max) ");
 //		amount = sc.nextInt();
-		
+		System.out.println("please read the README file to learn how to manipulate the program!");
 		System.out.println("how may rows of data do you want to generate?");
 		amount = sc.nextInt();
 		
-		System.out.println("What is the starting year for the date generator");
-		// This is the first array generator
+		
+		
+		//edit this array to alter the generation results
+		//to change the year thats output just edit the Date attributes
 		Object[] colum = {FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; 
+		
 		
 		
 //		for(int i = 0; i < colum.length; i++) {
@@ -122,17 +125,20 @@ public class speederuppermain {
 //		    
 //		}
 		for (int j = 0; j <= amount; j++) {
-		for (int i = 0; i < colum.length; i++) {
-			if (i == 0) {
-				System.out.print("(");
+			//J generates the rows
+			for (int i = 0; i < colum.length; i++) {
+				//i generates the columns
+				if (i == 0) {
+					System.out.print("(");
+				}
+				
+				if (i > 0 && i < colum.length) {
+					System.out.print(",");
+				}
+				System.out.print(colum[i]);
+				
 			}
-			
-			if (i > 0 && i < colum.length) {
-				System.out.print(",");
-			}
-			System.out.print(colum[i]);
-			
-		}
+		//edit this array to change the data output
 		 colum = new Object[]{j,FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; ; 
 		System.out.print(")");
 		System.out.println("");
