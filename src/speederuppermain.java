@@ -10,20 +10,20 @@ import java.util.Scanner;
 public class speederuppermain {
 	public static void help() {
 		
-		System.out.println("For a random first name generation data type: type 'first'");
-		System.out.println("for a random last name generation data type: type 'last'");
-		System.out.println("For a random date generation data type: type 'date'");
-		System.out.println("for a random ID generation that allows you to choose the range of IDs to generate: type 'id'");
+		System.out.println("For a random first name generation data type: type 1");
+		System.out.println("for a random last name generation data type: type 2");
+		System.out.println("For a random date generation data type: type 3");
+		System.out.println("for a random ID generation that allows you to choose the range of IDs to generate: type 4");
 		System.out.println("select data type: ");
 	}
-
-	public static Object cycleMethod() {
+	
+	public static Object SelectGenerator() {
 		help();
 		Object colum = "e";
 			 Scanner sc = new Scanner(System.in);
-		String option = sc.nextLine();
+		int option = sc.nextInt();
 	
-		if (option == "date") {
+		if (option == 3) {
 			System.out.println("whats the starting year for the random genration?: ");
 			int yearstart = sc.nextInt();
 			System.out.println("Whats the ending year for the random generation?: ");
@@ -31,21 +31,21 @@ public class speederuppermain {
 			colum = dateGen(yearstart,yearend);
 			
 		}
-		else if (option == "first") {
-			return colum = FirstNameGen();
+		else if (option == 1) {
+			 colum = FirstNameGen();
 		}
-		else if (option == "last") {
-			return colum = LastNameGen();
+		else if (option == 2) {
+			colum = LastNameGen();
 		}
-		else if (option == "id") {
+		else if (option == 4) {
 			System.out.println("whats the starting value of the ID?: ");
 			int startval = sc.nextInt();
 			System.out.println("whats the ending value of the ID?: ");
 			int endval = sc.nextInt();
 			
-			return colum = IDgen(startval,endval);
+			colum = IDgen(startval,endval);
+			
 		}
-		System.out.print(colum);
 		return colum;
 	}
 	
@@ -95,41 +95,50 @@ public class speederuppermain {
 		
 		return ("'"+lastnames[index]+"'");
 	}
-	public static int IDgen(int idmax,int idmin){
-		int id = (int)(Math.random()*idmax -idmin)-idmin;
-		
-		return id;
+	public static String IDgen(int idmax,int idmin){
+		int id = (int)(Math.random()*idmax -idmin)+ idmin;
+		String ids = ("" + id);
+		return ids;
 		
 	}
 	public static void main(String[] args) {
+		Scanner sc = new Scanner (System.in);
+		int amount = 0;
+//		System.out.println("how many colums are there? (4 max) ");
+//		amount = sc.nextInt();
 		
-		 int row = 0;
-		 int colum;
-		 String type;
-		 Scanner sc = new Scanner(System.in);
-		 
-		 System.out.print("how many colums are there in this table? (choose up to 4)");
-		 colum = sc.nextInt();
-		 if (colum > 4) {
-			 System.out.println("sorry we can't print that");
-		 }
-		 else {
-			 System.out.println("how many rows do you want? you may choose infinitly many");
-			 row = sc.nextInt();
-		 }
-		 if (colum == 1) {
-			 Object c1 = cycleMethod();
+		System.out.println("how may rows of data do you want to generate?");
+		amount = sc.nextInt();
 		
-			
-			for(int i = 0; i == row;i++) {
-				System.out.print(c1);
+		System.out.println("What is the starting year for the date generator");
+		// This is the first array generator
+		Object[] colum = {FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; 
+		
+		
+//		for(int i = 0; i < colum.length; i++) {
+//		
+//			colum[i] = SelectGenerator();
+//			System.out.println(colum[i]);
+//		    
+//		}
+		for (int j = 0; j <= amount; j++) {
+		for (int i = 0; i < colum.length; i++) {
+			if (i == 0) {
+				System.out.print("(");
 			}
-		 }
+			
+			if (i > 0 && i < colum.length) {
+				System.out.print(",");
+			}
+			System.out.print(colum[i]);
+			
 		}
-		
-
+		 colum = new Object[]{j,FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; ; 
+		System.out.print(")");
+		System.out.println("");
+		}
 	}
+	
 
-
-
+}
 
