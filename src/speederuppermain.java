@@ -1,21 +1,38 @@
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.Math;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 public class speederuppermain {
+
+	public static int yearMin;
+	public static int yearMax;
 	public static void help() {
-		
-		System.out.println("For a random first name generation data type: type 1");
-		System.out.println("for a random last name generation data type: type 2");
-		System.out.println("For a random date generation data type: type 3");
-		System.out.println("for a random ID generation that allows you to choose the range of IDs to generate: type 4");
-		System.out.println("select data type: ");
+		System.out.println("Select your column format:");
+		System.out.println("1: ('LASTNAME','FIRSTNAME','PHONENUMBER')");
+		System.out.println("2: ('FIRSTNAME','LASTNAME','PHONENUMBER')");
+		System.out.println("3: ('FIRSTNAME','LASTNAME')");
+		System.out.println("4: ('LASTNAME','FIRSTNAME')");
+		System.out.println("5: ('FIRSTNAME','LASTNAME','DATE','PHONENUMBER')");
+		System.out.println("6: ('LASTNAME','FIRSTNAME','DATE','PHONENUMBER')");
+		System.out.println("7: ('DATE','LASTNAME','FIRSTNAME','PHONENUMBER')");
+		System.out.println("8: ('DATE','FIRSTNAME','LASTNAME','PHONENUMBER')");
+		System.out.println("9: ('DATE','FIRSTNAME','LASTNAME')");
+		System.out.println("10:('DATE','LASTNAME','FIRSTNAME')");
+		System.out.println("select a format #:  ");
 	}
+	
+
+		
 	
 	public static Object SelectGenerator() {
 		help();
@@ -37,6 +54,7 @@ public class speederuppermain {
 		else if (option == 2) {
 			colum = LastNameGen();
 		}
+		
 		else if (option == 4) {
 			System.out.println("whats the starting value of the ID?: ");
 			int startval = sc.nextInt();
@@ -47,6 +65,13 @@ public class speederuppermain {
 			
 		}
 		return colum;
+	}
+	public static void selectYear() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("what is the starting year for range of generation?: ");
+		yearMin = sc.nextInt();
+		System.out.println("what is the ending year for range of generation?: ");
+		yearMax = sc.nextInt();
 	}
 	
 	public static String phoneNumber() {
@@ -73,7 +98,7 @@ public class speederuppermain {
 		int d = (int) (Math.random()*28)+ 1;
 		int y = (int) (Math.random()*(yearRangeEnd - yearRangeStart))+ yearRangeStart;
 		
-		String dateOutput = (m+"/"+d+"/"+y);
+		String dateOutput = ("'"+m+"/"+d+"/"+y+"'");
 		
 		
 		return dateOutput;
@@ -104,26 +129,60 @@ public class speederuppermain {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner (System.in);
 		int amount = 0;
-//		System.out.println("how many colums are there? (4 max) ");
-//		amount = sc.nextInt();
+		
+
 		System.out.println("please read the README file to learn how to manipulate the program!");
 		System.out.println("how may rows of data do you want to generate?");
 		amount = sc.nextInt();
 		
+		help();
+		
+		Object[] colum = new Object [0];
+	
+		//this is the selector for the format you wish to choose
+		int selector = sc.nextInt();
+		//these are the options
+		if (selector == 1) {
+			colum = new Object[] {LastNameGen(),FirstNameGen(),phoneNumber()};
+		}
+		else if (selector== 2) {
+			colum = new Object[]{FirstNameGen(),LastNameGen(),phoneNumber()};
+		}
+		else if (selector== 3) {
+			colum = new Object[] {FirstNameGen(),LastNameGen()};
+		}
+		else if (selector== 4) {
+			colum = new Object[] {LastNameGen(),FirstNameGen()};
+		}
+		else if (selector== 5) {
+			selectYear();
+			colum = new Object[]{FirstNameGen(),LastNameGen(),dateGen(yearMin,yearMax),phoneNumber()};
+		}
+		else if (selector== 6) {
+			selectYear();
+			colum = new Object[] {LastNameGen(),FirstNameGen(),dateGen(yearMin,yearMax),phoneNumber()};
+		}
+		else if (selector== 7) {
+			selectYear();
+			colum = new Object[]{dateGen(yearMin,yearMax),LastNameGen(),FirstNameGen(),phoneNumber()};
+		}
+		else if (selector== 8) {
+			selectYear();
+			colum = new Object[] {dateGen(yearMin,yearMax),FirstNameGen(),LastNameGen(),phoneNumber()};
+		}
+		else if (selector== 9) {
+			selectYear();
+			colum = new Object[] {dateGen(yearMin,yearMax),FirstNameGen(),LastNameGen()};
+		}
+		else if (selector== 10) {
+			selectYear();
+			colum = new Object[] {dateGen(yearMin,yearMax),LastNameGen(),FirstNameGen()};
+			
+		}
 		
 		
-		//edit this array to alter the generation results
-		//to change the year thats output just edit the Date attributes
-		Object[] colum = {FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; 
 		
 		
-		
-//		for(int i = 0; i < colum.length; i++) {
-//		
-//			colum[i] = SelectGenerator();
-//			System.out.println(colum[i]);
-//		    
-//		}
 		for (int j = 0; j <= amount; j++) {
 			//J generates the rows
 			for (int i = 0; i < colum.length; i++) {
@@ -138,9 +197,46 @@ public class speederuppermain {
 				System.out.print(colum[i]);
 				
 			}
-		//edit this array to change the data output
-		 colum = new Object[]{j,FirstNameGen(),LastNameGen(),dateGen(2000,2019),phoneNumber()}; ; 
-		System.out.print(")");
+			//this recreates the generation
+			if (selector == 1) {
+				 colum = new Object[] {LastNameGen(),FirstNameGen(),phoneNumber()};
+			}
+			else if (selector== 2) {
+				 colum = new Object[] {FirstNameGen(),LastNameGen(),phoneNumber()};
+			}
+			else if (selector== 3) {
+				 colum = new Object[]{FirstNameGen(),LastNameGen()};
+			}
+			else if (selector== 4) {
+				 colum = new Object[]{LastNameGen(),FirstNameGen()};
+			}
+			else if (selector== 5) {
+				
+				 colum = new Object[]{FirstNameGen(),LastNameGen(),dateGen(yearMin,yearMax),phoneNumber()};
+			}
+			else if (selector== 6) {
+				
+				 colum = new Object[]{LastNameGen(),FirstNameGen(),dateGen(yearMin,yearMax),phoneNumber()};
+			}
+			else if (selector== 7) {
+			
+				 colum = new Object[]{dateGen(yearMin,yearMax),LastNameGen(),FirstNameGen(),phoneNumber()};
+			}
+			else if (selector== 8) {
+				
+				 colum = new Object[] {dateGen(yearMin,yearMax),FirstNameGen(),LastNameGen(),phoneNumber()};
+			}
+			else if (selector== 9) {
+				
+				 colum = new Object[] {dateGen(yearMin,yearMax),FirstNameGen(),LastNameGen()};
+			}
+			else if (selector== 10) {
+			
+				 colum = new Object[]{dateGen(yearMin,yearMax),LastNameGen(),FirstNameGen()};
+				
+			}
+	
+		System.out.print("),");
 		System.out.println("");
 		}
 	}
